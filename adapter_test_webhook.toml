@@ -1,0 +1,10 @@
+name = "wh2"
+type            = "webhook"
+schemaVersion   = 1
+
+observationSource   = """
+    parse_request  [type="jsonparse" path="data,result" data="$(jobRun.requestBody)"]
+    send_to_bridge [type="bridge" name="get-sha256sum" requestData="{ \\"url\\": $(parse_request) }"]
+
+    parse_request -> send_to_bridge
+"""
